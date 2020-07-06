@@ -16,7 +16,50 @@ namespace Vidly.Controllers
             context = new ApplicationDbContext();
         }
 
+        public ActionResult New() {
 
+            return View(new NewMovieViewModel { genres = context.Genres.ToList() });
+        }
+        [HttpPost]
+        public ActionResult Create(Movie movie) {
+
+
+            movie.DateAdded = DateTime.Now;
+           // movie.Genre = context.Genres.FirstOrDefault(a => a.Id == movie.GenreId);
+
+            context.Movies.Add(movie);
+            context.SaveChanges();
+
+
+            return RedirectToAction("Index", "Movies");
+        }
+
+        [HttpPost]
+        public ActionResult Edit(Movie movie) {
+
+
+            var mo = context.Movies.SingleOrDefault(m => m.Id == movie.Id);
+            if(mo == null)
+                return HttpNotFound();
+
+            mo.Name = movie.Name;
+            mo.GenreId = movie.GenreId;
+            mo.NumberInStock = movie.NumberInStock;
+            mo.ReleaseDate = movie.ReleaseDate;
+
+            context.SaveChanges();
+
+
+            return RedirectToAction("Index", "Movies");
+        }
+        public ActionResult Edit(int id) {
+            var movie = context.Movies.FirstOrDefault(a => a.Id == id);
+
+            if(movie == null)
+                return HttpNotFound();
+
+            return View(new NewMovieViewModel { Movie = movie, genres = context.Genres.ToList() });
+        }
         protected override void Dispose(bool disposing) {
             context.Dispose();
         }

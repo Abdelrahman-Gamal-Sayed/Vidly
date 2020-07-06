@@ -7,9 +7,13 @@
 
 <h5>Movies</h5>
 
+<a class="btn btn-primary" href="@Url.Action("New", "Movies")">
+    New Movie
+</a>
 @if(!Model.Any()) {
     <p>We don't have any Movies yet.</p>
 } else {
+
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
@@ -23,7 +27,7 @@
             <tr>
                 <td>
 
-                    @Html.ActionLink(movie.Name, "Details", "Movies", new { id = movie.Id }, null)
+                    @Html.ActionLink(movie.Name, "Edit", "Movies", new { id = movie.Id }, null)
                
                 </td>
 

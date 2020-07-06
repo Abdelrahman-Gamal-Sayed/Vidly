@@ -28,9 +28,34 @@ namespace Vidly.Controllers
             });
         }
 
+        public ActionResult Edit(int id) {
+
+            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+            if(customer == null)
+                return HttpNotFound();
+
+            var viewModel = new NewCustomerViewModel {
+
+                membershipTypes = _context.membershipTypes.ToList(),
+                Customer = customer
+
+            };
+            return View("New", viewModel);
+        }
+
         [HttpPost]
         public ActionResult Create(Customer customer) {
-            _context.Customers.Add(customer);
+            if(customer.Id == 0)
+                _context.Customers.Add(customer);
+            else {
+                var cust = _context.Customers.Single(c => c.Id == customer.Id);
+
+                cust.Name = customer.Name;
+                cust.Birthdate = customer.Birthdate;
+                cust.MembershipTypeId = customer.MembershipTypeId;
+                cust.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter;
+
+            }
             _context.SaveChanges();
             return RedirectToAction("Index","Customers");
         }
