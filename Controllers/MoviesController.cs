@@ -18,14 +18,14 @@ namespace Vidly.Controllers
 
         public ActionResult New() {
 
-            return View(new NewMovieViewModel { genres = context.Genres.ToList() });
+            return View(new NewMovieViewModel { genres = context.Genres.ToList(), Movie = new Movie { Id = 0, NumberInStock = 0, ReleaseDate = new DateTime() } });
         }
-        [HttpPost]
+
         public ActionResult Create(Movie movie) {
 
 
             movie.DateAdded = DateTime.Now;
-
+            movie.Genre = context.Genres.SingleOrDefault(a => a.Id == movie.GenreId);
             context.Movies.Add(movie);
             context.SaveChanges();
 
