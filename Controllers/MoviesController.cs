@@ -25,7 +25,6 @@ namespace Vidly.Controllers
 
 
             movie.DateAdded = DateTime.Now;
-           // movie.Genre = context.Genres.FirstOrDefault(a => a.Id == movie.GenreId);
 
             context.Movies.Add(movie);
             context.SaveChanges();
